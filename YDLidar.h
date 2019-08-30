@@ -155,6 +155,7 @@ class YDLidar {
   // check whether the serial interface is opened
   bool isOpen(void);
 
+#ifndef AI_CUSTOMIZED_LIB
   // ask the YDLIDAR for its health info
   result_t getHealth(device_health &health, uint32_t timeout = DEFAULT_TIMEOUT);
 
@@ -166,6 +167,7 @@ class YDLidar {
 
   // start the scanPoint operation
   result_t startScan(bool force = false, uint32_t timeout = DEFAULT_TIMEOUT * 2);
+#endif // #ifndef AI_CUSTOMIZED_LIB
 
   // wait for one sample package to arrive
   result_t waitScanDot(uint32_t timeout = DEFAULT_TIMEOUT);
@@ -176,10 +178,12 @@ class YDLidar {
   }
 
  protected:
+#ifndef AI_CUSTOMIZED_LIB
   // send ask commond to YDLIDAR
   result_t sendCommand(uint8_t cmd, const void *payload = NULL, size_t payloadsize = 0);
   //wait for response header to arrive
   result_t waitResponseHeader(lidar_ans_header *header, uint32_t timeout = DEFAULT_TIMEOUT);
+#endif // #ifndef AI_CUSTOMIZED_LIB
 
  protected:
   HardwareSerial *_bined_serialdev;
