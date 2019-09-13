@@ -8,6 +8,10 @@
  */
 #include "YDLidar.h"
 
+#ifdef AI_CUSTOMIZED_LIB
+#include "ComStr.h"
+#endif // #ifdef AI_CUSTOMIZED_LIB
+
 YDLidar::YDLidar()
   : _bined_serialdev(NULL) {
   point.distance = 0;
@@ -322,6 +326,12 @@ result_t YDLidar::waitScanDot(uint32_t timeout) {
       case 9:
         CheckSum += (currentByte << LIDAR_RESP_MEASUREMENT_ANGLE_SAMPLE_SHIFT);
         break;
+
+#ifdef AI_CUSTOMIZED_LIB // need a default to pass -Wswitch-default
+      default:
+        PLATFORM_WARNING("%s %s line %d\n", ComStr::cInvalidCase, __FILE__, __LINE__);
+        break;
+#endif // #ifdef AI_CUSTOMIZED_LIB
       }
 
       packageBuffer[recvPos++] = currentByte;
@@ -499,6 +509,11 @@ result_t YDLidar::waitResponseHeader(lidar_ans_header *header, uint32_t timeout)
       }
 
       break;
+#ifdef AI_CUSTOMIZED_LIB // need a default to pass -Wswitch-default
+    default:
+      PLATFORM_WARNING("%s %s line %d\n", ComStr::cInvalidCase, __FILE__, __LINE__);
+      break;
+#endif // #ifdef AI_CUSTOMIZED_LIB
     }
 
     headerBuffer[recvPos++] = currentbyte;
