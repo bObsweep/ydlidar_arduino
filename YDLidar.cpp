@@ -50,7 +50,6 @@ bool YDLidar::isOpen(void) {
   return _bined_serialdev ? true : false;
 }
 
-#ifndef AI_CUSTOMIZED_LIB
 // ask the YDLIDAR for its device health
 
 result_t YDLidar::getHealth(device_health &health, uint32_t timeout) {
@@ -199,7 +198,6 @@ result_t YDLidar::startScan(bool force, uint32_t timeout) {
   }
   return RESULT_OK;
 }
-#endif // #ifndef AI_CUSTOMIZED_LIB
 
 // wait scan data
 result_t YDLidar::waitScanDot(uint32_t timeout) {
@@ -329,10 +327,10 @@ result_t YDLidar::waitScanDot(uint32_t timeout) {
         CheckSum += (currentByte << LIDAR_RESP_MEASUREMENT_ANGLE_SAMPLE_SHIFT);
         break;
 
-#ifdef AI_CUSTOMIZED_LIB
-			default:
-				PLATFORM_WARNING("%s %s line %d\n", ComStr::cInvalidCase, __FILE__, __LINE__);
-				break;
+#ifdef AI_CUSTOMIZED_LIB // need a default to pass -Wswitch-default
+      default:
+        PLATFORM_WARNING("%s %s line %d\n", ComStr::cInvalidCase, __FILE__, __LINE__);
+        break;
 #endif // #ifdef AI_CUSTOMIZED_LIB
       }
 
@@ -447,7 +445,7 @@ result_t YDLidar::waitScanDot(uint32_t timeout) {
   return RESULT_OK;
 }
 
-#ifndef AI_CUSTOMIZED_LIB
+
 //send data to serial
 result_t YDLidar::sendCommand(uint8_t cmd, const void *payload, size_t payloadsize) {
   cmd_packet pkt_header;
@@ -511,6 +509,11 @@ result_t YDLidar::waitResponseHeader(lidar_ans_header *header, uint32_t timeout)
       }
 
       break;
+#ifdef AI_CUSTOMIZED_LIB // need a default to pass -Wswitch-default
+    default:
+      PLATFORM_WARNING("%s %s line %d\n", ComStr::cInvalidCase, __FILE__, __LINE__);
+      break;
+#endif // #ifdef AI_CUSTOMIZED_LIB
     }
 
     headerBuffer[recvPos++] = currentbyte;
@@ -522,5 +525,4 @@ result_t YDLidar::waitResponseHeader(lidar_ans_header *header, uint32_t timeout)
 
   return RESULT_TIMEOUT;
 }
-#endif // #ifndef AI_CUSTOMIZED_LIB
 
