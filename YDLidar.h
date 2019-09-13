@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "Arduino.h"
+#include "HardwareSerial.h"
 #include "inc/v8stdint.h"
 
 
