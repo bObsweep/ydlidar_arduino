@@ -10,6 +10,10 @@
 
 #ifdef AI_CUSTOMIZED_LIB
 #include "ComStr.h"
+#include "TickTime.hpp"
+#include <cmath>
+#include "Debug.hpp"
+#define millis() TickTime::getTimeMs()
 #endif // #ifdef AI_CUSTOMIZED_LIB
 
 YDLidar::YDLidar()
