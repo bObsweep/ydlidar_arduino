@@ -8,7 +8,11 @@
 
 #pragma once
 
+#ifdef AI_CUSTOMIZED_LIB
+#include "drivers/arduino_serial_port.h"
+#else
 #include "HardwareSerial.h"
+#endif // #ifdef AI_CUSTOMIZED_LIB
 #include "inc/v8stdint.h"
 
 
