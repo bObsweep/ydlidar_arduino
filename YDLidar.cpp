@@ -406,8 +406,13 @@ result_t YDLidar::waitScanDot(uint32_t timeout) {
     node.distance_q2 = package.packageSampleDistance[package_Sample_Index];
 
     if (node.distance_q2 / 4 != 0) {
+#ifdef AI_CUSTOMIZED_LIB // to suppress -Wdouble-promotion
+      AngleCorrectForDistance = (int32_t)((atanf(((21.8f * (155.3f - (node.distance_q2 * 0.25f))) /
+                                           155.3f) / (node.distance_q2 * 0.25f))) * 3666.93f);
+#else
       AngleCorrectForDistance = (int32_t)((atan(((21.8 * (155.3 - (node.distance_q2 * 0.25f))) /
                                            155.3) / (node.distance_q2 * 0.25f))) * 3666.93);
+#endif // #ifdef AI_CUSTOMIZED_LIB
     } else {
       AngleCorrectForDistance = 0;
     }
